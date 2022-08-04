@@ -9,12 +9,22 @@
         android:id="@+id/nav_home"
         android:name="com.example.weatherassignment.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
 
+        tools:layout="@layout/fragment_home" >
+
+        <action
+            android:id="@+id/action_nav_home_to_weatherFragment"
+            app:destination="@id/weatherFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
     <fragment
-        android:id="@+id/nav_maps"
-        android:name="com.example.weatherassignment.MapsFragment"
-        android:label="@string/menu_maps"
-        tools:layout="@layout/fragment_maps" />
+        android:id="@+id/weatherFragment"
+        android:name="com.example.weatherassignment.ui.weather.WeatherFragment"
+        android:label="weather_fragment"
+        tools:layout="@layout/weather_fragment" />
+
 
 </navigation>
