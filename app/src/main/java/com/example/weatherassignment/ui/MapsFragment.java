@@ -45,6 +45,8 @@ public class MapsFragment extends Fragment {
                 @Override
                 public boolean onMarkerClick(@NonNull Marker marker) {
 
+
+
                     replaceFragment(new WeatherFragment());
 
                     return false;
