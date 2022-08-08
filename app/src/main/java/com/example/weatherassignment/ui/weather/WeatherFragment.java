@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -77,7 +78,6 @@ public class WeatherFragment extends Fragment {
             super.onPostExecute(s);
 
             try {
-
                 String result = null,  tempLowHigh = null;
                 String main, temp, tempMax, tempMin;
 
@@ -111,7 +111,7 @@ public class WeatherFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
 
-//                Toast.makeText(getApplicationContext(), "Could not find weather ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Could not find weather ", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -120,11 +120,15 @@ public class WeatherFragment extends Fragment {
         try {
             weatherInfoDownload downloadData = new weatherInfoDownload();
 
-            newYork = new LatLng(40.6976637, -74.1197635);
+            getParentFragmentManager().setFragmentResultListener("dataFromMap", this, new FragmentResultListener() {
+                @Override
+                public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                    double lat = result.getDouble("lat");
+                    double lon = result.getDouble("lon");
 
-            downloadData.execute("https://api.openweathermap.org/data/2.5/weather?lat=" + newYork.latitude + "&lon=" + newYork.longitude + "&appid=050b5612a3e8d2d64a82eb1c1cf6b59f&units=metric");  // this is the complete api
-
-//            Log.d("TAG", "https://api.openweathermap.org/data/2.5/weather?lat=" + newYork.latitude + "&lon=" + newYork.longitude + "&appid=050b5612a3e8d2d64a82eb1c1cf6b59f"); //done
+                    downloadData.execute("https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=050b5612a3e8d2d64a82eb1c1cf6b59f&units=metric", "");  // this is the complete api
+                }
+            });
 
         } catch (Exception e) {
             e.printStackTrace();

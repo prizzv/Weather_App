@@ -39,7 +39,6 @@ public class HomeFragment extends Fragment {
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.homeFrameLayout, fragment);
-        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 

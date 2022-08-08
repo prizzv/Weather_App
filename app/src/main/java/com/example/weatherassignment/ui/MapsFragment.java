@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -38,14 +39,17 @@ public class MapsFragment extends Fragment {
             mMap = googleMap;
 
             LatLng newYork = new LatLng(40.6976637, -74.1197635);
-            mMap.addMarker(new MarkerOptions().position(newYork).title("Marker in New York"));
+            mMap.addMarker(new MarkerOptions().position(newYork));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newYork, 10));
 
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(@NonNull Marker marker) {
 
-
+                    Bundle result = new Bundle();
+                    result.putDouble("lat", marker.getPosition().latitude);
+                    result.putDouble("lon", marker.getPosition().longitude);
+                    getParentFragmentManager().setFragmentResult("dataFromMap", result);
 
                     replaceFragment(new WeatherFragment());
 
@@ -53,10 +57,16 @@ public class MapsFragment extends Fragment {
                 }
             });
 
+            mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                @Override
+                public void onMapLongClick(@NonNull LatLng latLng) {
+                    mMap.addMarker(new MarkerOptions().position(latLng));
+                }
+            });
         }
     };
 
-    private void replaceFragment(Fragment fragment) {
+    private void replaceFragment(Fragment fragment) {  // code to start a new fragment using a frame layout
 
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
