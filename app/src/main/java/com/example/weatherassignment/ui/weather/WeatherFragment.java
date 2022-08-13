@@ -149,5 +149,4 @@ public class WeatherFragment extends Fragment {
 
         return view;
     }
-
 }
